@@ -1,0 +1,57 @@
+<!--
+  Generated template for the CreateLocationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>create-location</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <ion-label color="primary">Name</ion-label>
+      <ion-input [(ngModel)]="formModel.name" placeholder="Location Name.."></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary">Latitude: </ion-label>
+      <ion-input [(ngModel)]="formModel.lat" placeholder="Latitude">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary">Longitude: </ion-label>
+      <ion-input [(ngModel)]="formModel.lng" placeholder="Longitude">
+      </ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <ion-label color="primary">Find A Location:</ion-label>
+        <button (click)="openMap()" ion-button>Open Map</button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-label color="primary">Or Use my Location</ion-label>
+        <button (click)="findMe()" ion-button>Find Me!</button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-12>
+        <button (click)="submit()" color="secondary" ion-button>Submit</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
