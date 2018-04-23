@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Geolocation} from "@ionic-native/geolocation"
 import {eventStream} from "../../app/events"
 import {MapPage} from "../map/map"
+import {getRepository} from "typeorm";
+import {Location} from "../../entities/location";
 
 declare let google;
 
@@ -56,13 +58,22 @@ export class CreateLocationPage {
         })
   }
 
-  submit() {
-    // Save the location to localStorage
-    localStorage.locations = localStorage.locations || '[]'
-    let locations = JSON.parse(localStorage.locations)
-    locations.push({ ...this.formModel })
-    localStorage.locations = JSON.stringify(locations)
-    console.log(JSON.parse(localStorage.locations))
+  async submit() {
+
+    const locationsRepo = getRepository('location')
+
+
+    let location = new Location()
+    location.lat = this.formModel.lat.toString()
+    location.lng = this.formModel.lng.toString()
+    location.name = this.formModel.name
+
+    locationsRepo.save(location)
+
+    eventStream.next({
+      type: 'location-added',
+      payload: {}
+    })
 
     // Navigate back to home page
     this.navCtrl.pop()

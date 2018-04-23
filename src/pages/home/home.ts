@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
 import {CreateLocationPage} from "../create-location/create-location"
+import {getRepository} from "typeorm";
+import {eventStream} from "../../app/events";
 
 @Component({
   selector: 'page-home',
@@ -8,16 +10,26 @@ import {CreateLocationPage} from "../create-location/create-location"
 })
 export class HomePage {
 
-  locations = []
+  locations: any
 
   constructor(public navCtrl: NavController) {
   }
 
   ionViewDidLoad() {
-    this.locations = JSON.parse(localStorage.locations || '[]')
-    setInterval(() => {
-      this.locations = JSON.parse(localStorage.locations || '[]')
-    }, 500)
+    setTimeout(this.loadLocations.bind(this)  , 3000)
+
+
+    eventStream.subscribe( event => {
+      if(event['type'] === 'location-added') {
+        this.loadLocations()
+      }
+    })
+  }
+
+  async loadLocations() {
+    const locationsRepo = getRepository('location')
+    this.locations = await locationsRepo.find()
+    console.log(this.locations)
   }
 
   newLocation () {
